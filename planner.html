@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🗓️ Custom Study Planner</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-color: #ffe4f0;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      background: #ffb6c1;
+      color: white;
+      font-size: 1.5rem;
+      border-bottom: 5px dashed white;
+    }
+
+    nav {
+      text-align: center;
+      margin: 15px;
+    }
+
+    nav a {
+      background-color: #ff69b4;
+      color: white;
+      text-decoration: none;
+      padding: 10px 15px;
+      border-radius: 10px;
+      margin: 5px;
+      display: inline-block;
+    }
+
+    .planner-container {
+      max-width: 1000px;
+      margin: auto;
+      background: #fff0f5;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      overflow-x: auto;
+    }
+
+    #timeInput {
+      padding: 10px;
+      width: 250px;
+      border: 2px solid #ffb6c1;
+      border-radius: 10px;
+      margin-right: 10px;
+    }
+
+    #addRowBtn {
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    #addRowBtn:hover {
+      background-color: #ff1493;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #fff;
+    }
+
+    th, td {
+      border: 2px solid #ffb6c1;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #ffe4e1;
+      color: #d63384;
+    }
+
+    td[contenteditable="true"] {
+      background-color: #fff8fb;
+    }
+
+    .delete-btn {
+      background: #ff6b81;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .delete-btn:hover {
+      background: #ff1744;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>📚 My Weekly Planner</h1>
+    <p>Create your own time slots and study schedule!</p>
+  </header>
+
+  <nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="tasks.html">✅ Tasks</a>
+  </nav>
+
+  <main class="planner-container">
+    <input type="text" id="timeInput" placeholder="e.g. 6:00–7:00 AM">
+    <button id="addRowBtn">➕ Add Time Slot</button>
+
+    <table id="plannerTable">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Monday</th>
+          <th>Tuesday</th>
+          <th>Wednesday</th>
+          <th>Thursday</th>
+          <th>Friday</th>
+          <th>Saturday</th>
+          <th>Sunday</th>
+          <th>🗑️</th> <!-- Delete column -->
+        </tr>
+      </thead>
+      <tbody id="plannerBody">
+        <!-- Rows will be added here -->
+      </tbody>
+    </table>
+  </main>
+
+  <script>
+  const addRowBtn = document.getElementById("addRowBtn");
+  const plannerBody = document.getElementById("plannerBody");
+
+  // 🔁 Load planner from localStorage on startup
+  window.onload = function () {
+    const savedPlanner = JSON.parse(localStorage.getItem("weeklyPlanner")) || [];
+    savedPlanner.forEach(row => {
+      addPlannerRow(row.time, row.tasks);
+    });
+  };
+
+  // ➕ Add Row button handler
+  addRowBtn.addEventListener("click", () => {
+    const timeInput = document.getElementById("timeInput");
+    const time = timeInput.value.trim();
+
+    if (time === "") {
+      alert("Please enter a time slot!");
+      return;
+    }
+
+    addPlannerRow(time, ["", "", "", "", "", "", ""]);
+    timeInput.value = "";
+    savePlanner();
+  });
+
+  // 🧠 Main function to add row
+  function addPlannerRow(time, tasks) {
+    const tr = document.createElement("tr");
+
+    // Time cell
+    const timeCell = document.createElement("td");
+    timeCell.textContent = time;
+    tr.appendChild(timeCell);
+
+    // Editable cells for 7 days
+    for (let i = 0; i < 7; i++) {
+      const cell = document.createElement("td");
+      cell.contentEditable = "true";
+      cell.textContent = tasks[i] || "";
+      cell.addEventListener("input", savePlanner);
+      tr.appendChild(cell);
+    }
+
+    // ❌ Delete button
+    const deleteCell = document.createElement("td");
+    const delBtn = document.createElement("button");
+    delBtn.textContent = "❌";
+    delBtn.classList.add("delete-btn");
+    delBtn.onclick = () => {
+      plannerBody.removeChild(tr);
+      savePlanner();
+    };
+    deleteCell.appendChild(delBtn);
+    tr.appendChild(deleteCell);
+
+    plannerBody.appendChild(tr);
+  }
+
+  // 💾 Save planner to localStorage
+  function savePlanner() {
+    const rows = plannerBody.querySelectorAll("tr");
+    const data = [];
+
+    rows.forEach(row => {
+      const time = row.cells[0].textContent;
+      const tasks = [];
+      for (let i = 1; i <= 7; i++) {
+        tasks.push(row.cells[i].textContent);
+      }
+      data.push({ time, tasks });
+    });
+
+    localStorage.setItem("weeklyPlanner", JSON.stringify(data));
+  }
+</script>
+<footer style="text-align:center; font-family: 'Comic Sans MS', cursive; font-size: 14px; margin-top: 30px; color:#ff4d6d;">
+  💗 Created with love by <b>Puvisha Sundar</b> ✨
+</footer>
+
+</body>
+</html>

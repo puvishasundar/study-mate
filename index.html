@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>StudyMate – The Pink Planner 🎀</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive;
+      background: linear-gradient(to bottom right, #ffe6f0, #fff0f5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      color: #ff4d6d;
+      font-size: 3em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px #ffc1e3;
+    }
+
+    p.tagline {
+      font-size: 1.3em;
+      color: #cc3366;
+      margin-bottom: 30px;
+    }
+
+    .card-container {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .card {
+      background-color: #fff0f5;
+      border: 2px dashed #ffb6c1;
+      padding: 30px;
+      border-radius: 25px;
+      width: 250px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(255, 105, 180, 0.2);
+      transition: transform 0.3s, background 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      background-color: #ffe6f0;
+    }
+
+    .card a {
+      text-decoration: none;
+      font-size: 1.2em;
+      color: #ff4d6d;
+      font-weight: bold;
+    }
+
+    footer {
+      margin-top: 50px;
+      font-size: 0.9em;
+      color: #cc3366;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎀 StudyMate</h1>
+  <p class="tagline">Your Cutest Study Companion Ever!</p>
+
+  <div class="card-container">
+    <div class="card">
+      <a href="planner.html">📅 Weekly Planner</a>
+    </div>
+    <div class="card">
+      <a href="tasks.html">✅ Tasks & Checklists</a>
+    </div>
+    <div class="card">
+      <a href="#about">📖 About</a>
+    </div>
+  </div>
+
+  <footer>
+    💗 Created with love by <b>Puvisha Sundar</b> ✨
+  </footer>
+  <!-- Magical About Popup -->
+<div id="aboutPopup" class="about-popup">
+  <div class="about-box">
+    <h2>💖 About StudyMate</h2>
+    <p>Welcome to <b>StudyMate – The Pink Planner</b> 🎀<br>
+    Created with sparkle and love by <b>Puvisha Sundar</b> 👑<br><br>
+    This planner is designed to make your studies magical, motivating, and fun! Use it to plan your week, track your progress, and shine like a star 🌟.</p>
+    <button onclick="closeAbout()">Close ✨</button>
+  </div>
+</div>
+<script>
+  const aboutLink = document.querySelector('.card a[href="#about"]');
+  aboutLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('aboutPopup').style.display = 'flex';
+    playMagicSound();
+  });
+
+  function closeAbout() {
+    document.getElementById('aboutPopup').style.display = 'none';
+  }
+
+  function playMagicSound() {
+    const sound = new Audio('https://cdn.pixabay.com/download/audio/2022/03/31/audio_9a5aa16c4d.mp3?filename=magic-notification-112905.mp3');
+    sound.play();
+  }
+</script>
+
+</body>
+</html>

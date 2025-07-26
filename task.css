@@ -1,0 +1,53 @@
+.task-container {
+  max-width: 600px;
+  margin: auto;
+  background: #ffeef8;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+#taskInput {
+  width: 70%;
+  padding: 10px;
+  border: 2px solid #ffb6c1;
+  border-radius: 10px;
+  font-size: 1em;
+  margin-bottom: 10px;
+}
+
+button {
+  background-color: #ff69b4;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #ff1493;
+}
+
+#taskList {
+  list-style: none;
+  padding-left: 0;
+}
+
+#taskList li {
+  background: #fff;
+  border: 2px solid #ffb6c1;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 10px;
+  position: relative;
+}
+
+#taskList li button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: #f08080;
+  padding: 5px 8px;
+}

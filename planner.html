@@ -142,85 +142,46 @@
   </main>
 
   <script>
-  const addRowBtn = document.getElementById("addRowBtn");
-  const plannerBody = document.getElementById("plannerBody");
+    const addRowBtn = document.getElementById("addRowBtn");
+    const plannerBody = document.getElementById("plannerBody");
 
-  // 🔁 Load planner from localStorage on startup
-  window.onload = function () {
-    const savedPlanner = JSON.parse(localStorage.getItem("weeklyPlanner")) || [];
-    savedPlanner.forEach(row => {
-      addPlannerRow(row.time, row.tasks);
-    });
-  };
+    addRowBtn.addEventListener("click", () => {
+      const timeInput = document.getElementById("timeInput");
+      const time = timeInput.value.trim();
 
-  // ➕ Add Row button handler
-  addRowBtn.addEventListener("click", () => {
-    const timeInput = document.getElementById("timeInput");
-    const time = timeInput.value.trim();
-
-    if (time === "") {
-      alert("Please enter a time slot!");
-      return;
-    }
-
-    addPlannerRow(time, ["", "", "", "", "", "", ""]);
-    timeInput.value = "";
-    savePlanner();
-  });
-
-  // 🧠 Main function to add row
-  function addPlannerRow(time, tasks) {
-    const tr = document.createElement("tr");
-
-    // Time cell
-    const timeCell = document.createElement("td");
-    timeCell.textContent = time;
-    tr.appendChild(timeCell);
-
-    // Editable cells for 7 days
-    for (let i = 0; i < 7; i++) {
-      const cell = document.createElement("td");
-      cell.contentEditable = "true";
-      cell.textContent = tasks[i] || "";
-      cell.addEventListener("input", savePlanner);
-      tr.appendChild(cell);
-    }
-
-    // ❌ Delete button
-    const deleteCell = document.createElement("td");
-    const delBtn = document.createElement("button");
-    delBtn.textContent = "❌";
-    delBtn.classList.add("delete-btn");
-    delBtn.onclick = () => {
-      plannerBody.removeChild(tr);
-      savePlanner();
-    };
-    deleteCell.appendChild(delBtn);
-    tr.appendChild(deleteCell);
-
-    plannerBody.appendChild(tr);
-  }
-
-  // 💾 Save planner to localStorage
-  function savePlanner() {
-    const rows = plannerBody.querySelectorAll("tr");
-    const data = [];
-
-    rows.forEach(row => {
-      const time = row.cells[0].textContent;
-      const tasks = [];
-      for (let i = 1; i <= 7; i++) {
-        tasks.push(row.cells[i].textContent);
+      if (time === "") {
+        alert("Please enter a time slot!");
+        return;
       }
-      data.push({ time, tasks });
+
+      const tr = document.createElement("tr");
+
+      // Time cell
+      const timeCell = document.createElement("td");
+      timeCell.textContent = time;
+      tr.appendChild(timeCell);
+
+      // Editable cells for each day
+      for (let i = 0; i < 7; i++) {
+        const cell = document.createElement("td");
+        cell.contentEditable = "true";
+        tr.appendChild(cell);
+      }
+
+      // Delete button
+      const deleteCell = document.createElement("td");
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "❌";
+      delBtn.classList.add("delete-btn");
+      delBtn.onclick = () => {
+        plannerBody.removeChild(tr);
+      };
+      deleteCell.appendChild(delBtn);
+      tr.appendChild(deleteCell);
+
+      plannerBody.appendChild(tr);
+      timeInput.value = "";
     });
-
-    localStorage.setItem("weeklyPlanner", JSON.stringify(data));
-  }
-</script>
-<footer style="text-align:center; font-family: 'Comic Sans MS', cursive; font-size: 14px; margin-top: 30px; color:#ff4d6d;">
-  💗 Created with love by <b>Puvisha Sundar</b> ✨
-</footer>
-
+  </script>
 </body>
 </html>

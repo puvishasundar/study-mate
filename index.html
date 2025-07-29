@@ -16,6 +16,8 @@
       justify-content: space-between;
       min-height: 100vh;
       padding: 40px 20px;
+      overflow-x: hidden;
+      position: relative;
     }
 
     h1 {
@@ -23,12 +25,14 @@
       font-size: 3em;
       margin-bottom: 10px;
       text-shadow: 2px 2px #ffc1e3;
+      z-index: 2;
     }
 
     p.tagline {
       font-size: 1.3em;
       color: #cc3366;
       margin-bottom: 30px;
+      z-index: 2;
     }
 
     .card-container {
@@ -36,6 +40,7 @@
       gap: 30px;
       flex-wrap: wrap;
       justify-content: center;
+      z-index: 2;
     }
 
     .card {
@@ -65,10 +70,76 @@
       margin-top: 50px;
       font-size: 0.9em;
       color: #cc3366;
+      z-index: 2;
+    }
+
+    /* Floating heart drawings */
+    .floating-hearts svg {
+      position: absolute;
+      animation: float 4s ease-in-out infinite;
+      opacity: 0.5;
+    }
+
+    .floating-hearts svg:nth-child(1) {
+      top: 20%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .floating-hearts svg:nth-child(2) {
+      top: 35%;
+      right: 15%;
+      animation-delay: 1s;
+    }
+
+    .floating-hearts svg:nth-child(3) {
+      bottom: 25%;
+      left: 20%;
+      animation-delay: 2s;
+    }
+
+    .floating-hearts svg:nth-child(4) {
+      bottom: 15%;
+      right: 10%;
+      animation-delay: 1.5s;
+    }
+
+    .floating-hearts svg:nth-child(5) {
+      top: 10%;
+      right: 25%;
+      animation-delay: 0.5s;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-10px) rotate(2deg);
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Cute floating heart drawings -->
+  <div class="floating-hearts">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="#ff8fb1" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 21s-6.2-4.2-9.1-7.7C.5 10.2 2.1 6 5.7 5.2c2.1-.5 4.2.6 5.3 2.3 1.1-1.7 3.2-2.8 5.3-2.3 3.6.8 5.2 5 2.8 8.1C18.2 16.8 12 21 12 21z"/>
+    </svg>
+    <svg width="25" height="25" viewBox="0 0 24 24" fill="#ffa3c2" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 21s-6.2-4.2-9.1-7.7C.5 10.2 2.1 6 5.7 5.2c2.1-.5 4.2.6 5.3 2.3 1.1-1.7 3.2-2.8 5.3-2.3 3.6.8 5.2 5 2.8 8.1C18.2 16.8 12 21 12 21z"/>
+    </svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="#ffc9dd" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 21s-6.2-4.2-9.1-7.7C.5 10.2 2.1 6 5.7 5.2c2.1-.5 4.2.6 5.3 2.3 1.1-1.7 3.2-2.8 5.3-2.3 3.6.8 5.2 5 2.8 8.1C18.2 16.8 12 21 12 21z"/>
+    </svg>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="#ff94b8" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 21s-6.2-4.2-9.1-7.7C.5 10.2 2.1 6 5.7 5.2c2.1-.5 4.2.6 5.3 2.3 1.1-1.7 3.2-2.8 5.3-2.3 3.6.8 5.2 5 2.8 8.1C18.2 16.8 12 21 12 21z"/>
+    </svg>
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="#ffd6e8" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 21s-6.2-4.2-9.1-7.7C.5 10.2 2.1 6 5.7 5.2c2.1-.5 4.2.6 5.3 2.3 1.1-1.7 3.2-2.8 5.3-2.3 3.6.8 5.2 5 2.8 8.1C18.2 16.8 12 21 12 21z"/>
+    </svg>
+  </div>
+
   <h1>🎀 StudyMate</h1>
   <p class="tagline">Your Cutest Study Companion Ever!</p>
 
@@ -87,33 +158,35 @@
   <footer>
     💗 Created with love by <b>Puvisha Sundar</b> ✨
   </footer>
+
   <!-- Magical About Popup -->
-<div id="aboutPopup" class="about-popup">
-  <div class="about-box">
-    <h2>💖 About StudyMate</h2>
-    <p>Welcome to <b>StudyMate – The Pink Planner</b> 🎀<br>
-    Created with sparkle and love by <b>Puvisha Sundar</b> 👑<br><br>
-    This planner is designed to make your studies magical, motivating, and fun! Use it to plan your week, track your progress, and shine like a star 🌟.</p>
-    <button onclick="closeAbout()">Close ✨</button>
+  <div id="aboutPopup" class="about-popup" style="display: none;">
+    <div class="about-box">
+      <h2>💖 About StudyMate</h2>
+      <p>Welcome to <b>StudyMate – The Pink Planner</b> 🎀<br>
+        Created with sparkle and love by <b>Puvisha Sundar</b> 👑<br><br>
+        This planner is designed to make your studies magical, motivating, and fun! Use it to plan your week, track your progress, and shine like a star 🌟.
+      </p>
+      <button onclick="closeAbout()">Close ✨</button>
+    </div>
   </div>
-</div>
-<script>
-  const aboutLink = document.querySelector('.card a[href="#about"]');
-  aboutLink.addEventListener('click', function(e) {
-    e.preventDefault();
-    document.getElementById('aboutPopup').style.display = 'flex';
-    playMagicSound();
-  });
 
-  function closeAbout() {
-    document.getElementById('aboutPopup').style.display = 'none';
-  }
+  <script>
+    const aboutLink = document.querySelector('.card a[href="#about"]');
+    aboutLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('aboutPopup').style.display = 'flex';
+      playMagicSound();
+    });
 
-  function playMagicSound() {
-    const sound = new Audio('https://cdn.pixabay.com/download/audio/2022/03/31/audio_9a5aa16c4d.mp3?filename=magic-notification-112905.mp3');
-    sound.play();
-  }
-</script>
+    function closeAbout() {
+      document.getElementById('aboutPopup').style.display = 'none';
+    }
 
+    function playMagicSound() {
+      const sound = new Audio('https://cdn.pixabay.com/download/audio/2022/03/31/audio_9a5aa16c4d.mp3?filename=magic-notification-112905.mp3');
+      sound.play();
+    }
+  </script>
 </body>
 </html>

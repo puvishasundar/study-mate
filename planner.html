@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>🗓️ Custom Study Planner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🗓 Custom Study Planner</title>
   <link rel="stylesheet" href="style.css">
   <style>
     body {
@@ -103,6 +104,26 @@
     .delete-btn:hover {
       background: #ff1744;
     }
+
+    @media (max-width: 600px) {
+      #timeInput {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      #addRowBtn {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      table, thead, tbody, th, td, tr {
+        font-size: 12px;
+      }
+
+      th, td {
+        padding: 5px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -132,7 +153,7 @@
           <th>Friday</th>
           <th>Saturday</th>
           <th>Sunday</th>
-          <th>🗑️</th> <!-- Delete column -->
+          <th>🗑</th>
         </tr>
       </thead>
       <tbody id="plannerBody">
@@ -145,6 +166,52 @@
     const addRowBtn = document.getElementById("addRowBtn");
     const plannerBody = document.getElementById("plannerBody");
 
+    function savePlannerToStorage() {
+      const rows = [];
+      plannerBody.querySelectorAll("tr").forEach(tr => {
+        const cells = tr.querySelectorAll("td");
+        const row = [];
+        cells.forEach((cell, index) => {
+          if (index < 8) row.push(cell.textContent);
+        });
+        rows.push(row);
+      });
+      localStorage.setItem("weeklyPlanner", JSON.stringify(rows));
+    }
+
+    function loadPlannerFromStorage() {
+      const data = JSON.parse(localStorage.getItem("weeklyPlanner") || "[]");
+      data.forEach(rowData => {
+        const tr = document.createElement("tr");
+
+        rowData.forEach((cellData, i) => {
+          const td = document.createElement("td");
+          td.textContent = cellData;
+          if (i > 0) td.contentEditable = "true";
+          tr.appendChild(td);
+        });
+
+        // Delete Button
+        const deleteCell = document.createElement("td");
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "❌";
+        delBtn.classList.add("delete-btn");
+        delBtn.onclick = () => {
+          plannerBody.removeChild(tr);
+          savePlannerToStorage();
+        };
+        deleteCell.appendChild(delBtn);
+        tr.appendChild(deleteCell);
+
+        // Save changes on edit
+        tr.querySelectorAll("td[contenteditable='true']").forEach(cell => {
+          cell.addEventListener("input", savePlannerToStorage);
+        });
+
+        plannerBody.appendChild(tr);
+      });
+    }
+
     addRowBtn.addEventListener("click", () => {
       const timeInput = document.getElementById("timeInput");
       const time = timeInput.value.trim();
@@ -156,32 +223,38 @@
 
       const tr = document.createElement("tr");
 
-      // Time cell
+      // Time Cell
       const timeCell = document.createElement("td");
       timeCell.textContent = time;
       tr.appendChild(timeCell);
 
-      // Editable cells for each day
+      // Editable cells for days
       for (let i = 0; i < 7; i++) {
         const cell = document.createElement("td");
         cell.contentEditable = "true";
+        cell.addEventListener("input", savePlannerToStorage);
         tr.appendChild(cell);
       }
 
-      // Delete button
+      // Delete Button
       const deleteCell = document.createElement("td");
       const delBtn = document.createElement("button");
       delBtn.textContent = "❌";
       delBtn.classList.add("delete-btn");
       delBtn.onclick = () => {
         plannerBody.removeChild(tr);
+        savePlannerToStorage();
       };
       deleteCell.appendChild(delBtn);
       tr.appendChild(deleteCell);
 
       plannerBody.appendChild(tr);
+      savePlannerToStorage();
       timeInput.value = "";
     });
+
+    // Load planner from storage when page loads
+    window.addEventListener("load", loadPlannerFromStorage);
   </script>
 </body>
 </html>
